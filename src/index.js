@@ -53,8 +53,10 @@ for (let time = 0; time < timeWindowMins;) {
   }
 
   console.log('Current time: ' + time);
-  console.log(customerQueue)
+  // console.log(customerQueue)
 }
+
+console.log(customerQueue);
 
 
 debugger; //STEPH STPHE TPHSEPAHSOIJDA;SDJ;AJS;I
@@ -67,12 +69,12 @@ for (let i = 0; i < (customerQueue.length-1); i++) {
     customerQueue[i + 1].waitTime = 0;
   }
 
-  console.log(customerQueue);
+  // console.log(customerQueue);
   // debugger;
 
 
 }
-
+console.log(customerQueue);
 
 
   // Customer arrives
