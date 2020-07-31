@@ -60,14 +60,22 @@ console.log(customerQueue);
 
 
 debugger; //STEPH STPHE TPHSEPAHSOIJDA;SDJ;AJS;I
-for (let i = 0; i < (customerQueue.length-1); i++) {
-  //
-  customerQueue[i].leaveTime = (customerQueue[i].waitTime || 0) + customerQueue[i].earliestLeaveTime;
-  customerQueue[i + 1].waitTime = customerQueue[i].leaveTime - customerQueue[i + 1].arrivalTime;
 
-  if (customerQueue[i + 1].waitTime < 0) {
-    customerQueue[i + 1].waitTime = 0;
+customerQueue[0].leaveTime = customerQueue[0].earliestLeaveTime;
+
+for (let i = 1; i < (customerQueue.length); i++) {
+  // customerQueue[i].leaveTime = (customerQueue[i].waitTime || 0) + customerQueue[i].earliestLeaveTime;
+  // customerQueue[i + 1].waitTime = customerQueue[i].leaveTime - customerQueue[i + 1].arrivalTime;
+
+  // Refactor
+  customerQueue[i].waitTime = customerQueue[i-1].leaveTime - customerQueue[i].arrivalTime;
+  if (customerQueue[i].waitTime < 0) {
+    customerQueue[i].waitTime = 0;
   }
+  customerQueue[i].leaveTime = customerQueue[i].waitTime + customerQueue[i].earliestLeaveTime;
+
+
+  
 
   // console.log(customerQueue);
   // debugger;
