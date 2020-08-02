@@ -1,8 +1,9 @@
+const { performance } = require('perf_hooks');
 const { 
   timeWindow_i, 
   calculateConeTime_i, 
-  calcTimeBetweenCustomers,
-  simulationIterations } = require("./consts");
+  calcTimeBetweenCustomers_i,
+  simulationRuns_i } = require("./consts");
 // < Average: 41.89834305234547
 // < programRunTime: 42.188ms
 
@@ -15,7 +16,9 @@ const {
 
 */
 
-console.time('programRunTime');
+// console.time('programRunTime');
+// const programStartTime = performance.now();
+
 
 const customerArrives = (arrivalTime, customerArray, calculateConeTime) => {
   const coneTime = calculateConeTime();
@@ -45,14 +48,20 @@ const customerCalcs = (customerArray) => {
   }
 }
 
+const arrayAverage = (array) => array.reduce((a, b) => a + b) / array.length;
+
 const simulation = (
   timeWindow,
-  simRuns,
+  simulationRuns,
   calculateConeTime,
   calcTimeBetweenCustomers
   ) => {
+  // console.time('programRunTime');
+  const programStartTime = performance.now();
   const waitTimesArray = [];
-  for (let i = 0; i < simRuns; i++) {
+  const meanWaitInSystemArray = [];
+  const meanWaitInQueueArray = [];
+  for (let i = 0; i < simulationRuns; i++) {
     const customerQueue = [];
     for (let time = 0; time < timeWindow.mins;) {
       const timeTillNextCustomer = calcTimeBetweenCustomers();
@@ -67,30 +76,63 @@ const simulation = (
       }
     }
 
-    const VIPCustomer = {
-      arrivalTime: timeWindow.mins
-    };
+    const VIPCustomer = {};
+    VIPCustomer.arrivalTime = timeWindow.mins;
     VIPCustomer.waitTime = customerQueue[customerQueue.length - 1].leaveTime - VIPCustomer.arrivalTime;
     if (VIPCustomer.waitTime < 0) {
       VIPCustomer.waitTime = 0;
     }
 
     waitTimesArray.push(VIPCustomer.waitTime);
+
+    ///////// stephania here
+
+    const allCustomerSystemWaitTimesArray = customerQueue.reduce((acc, customer, index) => {
+      acc[index] = customer.systemWaitTime;
+      return acc;
+    }, []);
+
+    const allCustomerQueueWaitTimesArray = customerQueue.reduce((acc, customer, index) => {
+      acc[index] = customer.waitTime;
+      return acc;
+    }, []);
+
+    const arrayAverage = (array) => array.reduce((a, b) => a + b) / array.length;
+
+    const meanWaitInSystem = arrayAverage(allCustomerSystemWaitTimesArray);
+    const meanWaitInQueue = arrayAverage(allCustomerQueueWaitTimesArray);
+    meanWaitInSystemArray.push(meanWaitInSystem);
+    meanWaitInQueueArray.push(meanWaitInQueue);
+  // debugger;
+
+  //////// stephania here
   }
-  return waitTimesArray;
+  console.log('Average Wait for VIP Customer: ' + arrayAverage(waitTimesArray));
+  ///////// stephania here
+  console.log('mean wait in system (wait in queue + service time): ' + arrayAverage(meanWaitInSystemArray));
+  console.log('mean wait in queue (wait in queue): ' + arrayAverage(meanWaitInQueueArray));
+ ///////// stephania here
+  // console.timeEnd('programRunTime');
+  const programEndTime = performance.now();
+  const programRunTime = (programEndTime - programStartTime);
+  console.log('Program Run Time: ' + programRunTime);
+  // return waitTimesArray;
 }
 
 const waitTimesArray = simulation(
   timeWindow_i,
-  simulationIterations,
+  simulationRuns_i,
   calculateConeTime_i,
-  calcTimeBetweenCustomers
+  calcTimeBetweenCustomers_i
   );
 
-const arrayAverage = (array) => array.reduce((a, b) => a + b) / array.length;
+// const arrayAverage = (array) => array.reduce((a, b) => a + b) / array.length;
 
-console.log('Average: ' + arrayAverage(waitTimesArray));
+// console.log('Average: ' + arrayAverage(waitTimesArray));
 
-console.timeEnd('programRunTime');
+// console.timeEnd('programRunTime');
+// const programEndTime = performance.now();
+// const programRunTime = (programEndTime - programStartTime);
+// console.log(programRunTime);
 
 module.exports = simulation;
