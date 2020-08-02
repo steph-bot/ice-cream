@@ -38,7 +38,7 @@ const simulation = (
 ) => {
   // console.time('programRunTime');
   const programStartTime = performance.now();
-  const waitTimesArray = [];
+  const VIPWaitTimesArray = [];
   const meanWaitInSystemArray = [];
   const meanWaitInQueueArray = [];
   for (let i = 0; i < simulationRuns; i++) {
@@ -64,7 +64,7 @@ const simulation = (
       VIPCustomer.waitTime = 0;
     }
 
-    waitTimesArray.push(VIPCustomer.waitTime);
+    VIPWaitTimesArray.push(VIPCustomer.waitTime);
 
     /// ////// stephania here
 
@@ -86,14 +86,33 @@ const simulation = (
 
     /// ///// stephania here
   }
-  console.log(`Average Wait for VIP Customer: ${arrayAverage(waitTimesArray)}`);
+
+  const simOutput = {
+    rawData: {
+      waitTimeForVIP: VIPWaitTimesArray,
+      meanWaitTimeForAllCustomers: {
+        system: meanWaitInSystemArray,
+        queue: meanWaitInQueueArray,
+      },
+    },
+    simSummary: {
+      meanWaitTimeForVIP: arrayAverage(VIPWaitTimesArray), // avg wait for VIP customer
+      meanMeanWaitTimeForAllCustomers: {
+        system: arrayAverage(meanWaitInSystemArray),
+        queue: arrayAverage(meanWaitInQueueArray),
+      },
+    },
+  };
+
+  console.log(`Average Wait for VIP Customer: ${simOutput.simSummary.meanWaitTimeForVIP}`);
   /// ////// stephania here
-  console.log(`mean wait in system (wait in queue + service time): ${arrayAverage(meanWaitInSystemArray)}`);
-  console.log(`mean wait in queue (wait in queue): ${arrayAverage(meanWaitInQueueArray)}`);
+  console.log(`Mean Wait in System (wait in queue + service time): ${simOutput.simSummary.meanMeanWaitTimeForAllCustomers.system}`);
+  console.log(`Mean Wait in Queue (wait in queue): ${simOutput.simSummary.meanMeanWaitTimeForAllCustomers.queue}`);
   /// ////// stephania here
   const programEndTime = performance.now();
-  const programRunTime = (programEndTime - programStartTime);
-  console.log(`Program Run Time: ${programRunTime}`);
+  simOutput.simSummary.programRunTime = (programEndTime - programStartTime);
+  console.log(`Program Run Time (ms): ${simOutput.simSummary.programRunTime}`);
+  return simOutput;
 };
 
 module.exports = simulation;

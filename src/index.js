@@ -9,12 +9,9 @@ const simulation = require('./simulation');
 // < programRunTime: 42.188ms
 
 /*
-
-+ Assumptions +
-
-- Can only make one cone at a time
-- Customers must wait in line after arriving if a cone is in progress
-
+    + Assumptions +
+    - Can only make one cone at a time
+    - Customers must wait in line after arriving if a cone is in progress
 */
 
 const waitTimesArray = simulation(
@@ -23,5 +20,3 @@ const waitTimesArray = simulation(
   calculateConeTime_i,
   calcTimeBetweenCustomers_i,
 );
-
-// module.exports = simulation;
