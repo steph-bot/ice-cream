@@ -1,6 +1,6 @@
 const assert = require('assert');
 const random = require('random');
-const simulation = require('../src/index');
+const simulation = require('../src/simulation');
 
 const expectedInput = {};
 
