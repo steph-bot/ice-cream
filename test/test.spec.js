@@ -1,6 +1,6 @@
 const assert = require('assert');
 const random = require('random');
-const simulation = require('../src/simulation');
+const simulation = require('../src/lib/simulation');
 
 // Reference: http://web.mst.edu/~gosavia/queuing_formulas.pdf
 
