@@ -1,4 +1,10 @@
-const random = require("random");
+const { 
+  timeWindow_i, 
+  calculateConeTime_i, 
+  calcTimeBetweenCustomers,
+  simulationIterations } = require("./consts");
+// < Average: 41.89834305234547
+// < programRunTime: 42.188ms
 
 /*
 
@@ -9,97 +15,82 @@ const random = require("random");
 
 */
 
-// STEPH FIX timeWindowHours = 7 PER PROBLEM STATMENT
-const timeWindowHours = 7; // How many hours until VIP Customer shows up
-const timeWindowMins = timeWindowHours * 60;
+console.time('programRunTime');
 
-const coneTimeStats = {
-    mean: 7, // (minutes) avg to create single cone
-    stdDev: 1 // (minutes) std deviation
-};
-
-const calculateConeTime = random.normal(coneTimeStats.mean, coneTimeStats.stdDev);
-
-const customerArrivalStats = {
-    mean: 7, // (minutes) avg time between customer arrivals
-};
-
-const customerLambda = 1 / customerArrivalStats.mean;
-
-const calcTimeBetweenCustomers = random.exponential(customerLambda);
-
-const simulationIterations = 1001;
-const waitTimesArray = [];
-
-for (let i = 0; i < simulationIterations; i++) {
-
-  // debugger;
-
-  const customerQueue = [];
-
-  const customerArrives = (arrivalTime) => {
-    const cone = calculateConeTime(); // REMOVE Math.round() STEPH!!!!!
-    const customer = {
-      arrivalTime: arrivalTime,
-      coneTime: cone,
-      earliestLeaveTime: arrivalTime + cone
-    };
-    customerQueue.push(customer);
-  }
-
-  for (let time = 0; time < timeWindowMins;) {
-    const timeTillNextCustomer = calcTimeBetweenCustomers(); // REMOVE Math.round() STEPH!!!!!
-    const arrivalTime = time + timeTillNextCustomer;
-
-    if (arrivalTime < timeWindowMins) {
-      time = arrivalTime;
-      customerArrives(arrivalTime);
-    } else {
-      time = timeWindowMins;
-    }
-  }
-
-  // console.log(customerQueue);
-  // debugger; // STEPH
-
-  customerQueue[0].leaveTime = customerQueue[0].earliestLeaveTime;
-
-  for (let i = 1; i < (customerQueue.length); i++) {
-    customerQueue[i].waitTime = customerQueue[i-1].leaveTime - customerQueue[i].arrivalTime;
-    if (customerQueue[i].waitTime < 0) {
-      customerQueue[i].waitTime = 0;
-    }
-    customerQueue[i].leaveTime = customerQueue[i].waitTime + customerQueue[i].earliestLeaveTime;
-  }
-
-  const VIPCustomer = {
-    arrivalTime: timeWindowMins
+const customerArrives = (arrivalTime, customerArray, calculateConeTime) => {
+  const coneTime = calculateConeTime();
+  const customer = {
+    arrivalTime: arrivalTime,
+    coneTime: coneTime,
+    earliestLeaveTime: arrivalTime + coneTime
   };
-  VIPCustomer.waitTime = customerQueue[customerQueue.length - 1].leaveTime - VIPCustomer.arrivalTime;
-  if (VIPCustomer.waitTime < 0) {
-    VIPCustomer.waitTime = 0;
-  }
-
-  // console.log(customerQueue);
-  // console.log('');
-  // console.log(customerQueue[customerQueue.length - 1])
-  // console.log('');
-  console.log('i: ' + i + ' Wait Time: ' + VIPCustomer.waitTime);
-  waitTimesArray.push(VIPCustomer.waitTime);
-  // debugger; // STEPH
-
-
-  /*
-  let average = (array) => array.reduce((a, b) => a + b) / array.length;
-  console.log(average([1,2,3,4]));
-  */
+  customerArray.push(customer);
 }
 
-console.log(waitTimesArray);
+const customerCalcs = (customerArray) => {
+  const i = customerArray.length - 1;
+  if (i === 0) {
+    // 1st Customer
+    customerArray[0].leaveTime = customerArray[0].earliestLeaveTime;
+    customerArray[0].waitTime = 0;
+    customerArray[0].systemWaitTime = customerArray[0].waitTime + customerArray[0].coneTime;
+  } else {
+    // Subsequent Customers
+    customerArray[i].waitTime = customerArray[i - 1].leaveTime - customerArray[i].arrivalTime;
+    if (customerArray[i].waitTime < 0) {
+      customerArray[i].waitTime = 0;
+    }
+    customerArray[i].leaveTime = customerArray[i].waitTime + customerArray[i].earliestLeaveTime;
+    customerArray[i].systemWaitTime = customerArray[i].waitTime + customerArray[i].coneTime;
+  }
+}
 
+const simulation = (
+  timeWindow,
+  simRuns,
+  calculateConeTime,
+  calcTimeBetweenCustomers
+  ) => {
+  const waitTimesArray = [];
+  for (let i = 0; i < simRuns; i++) {
+    const customerQueue = [];
+    for (let time = 0; time < timeWindow.mins;) {
+      const timeTillNextCustomer = calcTimeBetweenCustomers();
+      const arrivalTime = time + timeTillNextCustomer;
+
+      if (arrivalTime < timeWindow.mins) {
+        time = arrivalTime;
+        customerArrives(arrivalTime, customerQueue, calculateConeTime);
+        customerCalcs(customerQueue);
+      } else {
+        time = timeWindow.mins;
+      }
+    }
+
+    const VIPCustomer = {
+      arrivalTime: timeWindow.mins
+    };
+    VIPCustomer.waitTime = customerQueue[customerQueue.length - 1].leaveTime - VIPCustomer.arrivalTime;
+    if (VIPCustomer.waitTime < 0) {
+      VIPCustomer.waitTime = 0;
+    }
+
+    waitTimesArray.push(VIPCustomer.waitTime);
+  }
+  return waitTimesArray;
+}
+
+const waitTimesArray = simulation(
+  timeWindow_i,
+  simulationIterations,
+  calculateConeTime_i,
+  calcTimeBetweenCustomers
+  );
 
 const arrayAverage = (array) => array.reduce((a, b) => a + b) / array.length;
 
 console.log('Average: ' + arrayAverage(waitTimesArray));
 
-debugger;
+console.timeEnd('programRunTime');
+
+module.exports = simulation;
