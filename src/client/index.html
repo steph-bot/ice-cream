@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Ice Cream Stand</title>
+    <!-- Responsive View -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- ====++++====++++====++++==== START CSS STYLE ====++++====++++====++++==== -->
+    <!-- Bootstrap CDN -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+      integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+      crossorigin="anonymous"
+    />
+    <!-- Stephanie Style -->
+    <link rel="stylesheet" type="text/css" href="./assets/styles/main.css" />
+    <!-- ====++++====++++====++++==== END CSS STYLE ====++++====++++====++++==== -->
+  </head>
+
+  <body>
+    <!-- ====++++====++++====++++ START BOOTSTRAP NAVBAR ++++====++++====++++==== -->
+    <nav class="navbar navbar-expand-sm navbar-light bg-light">
+      <a class="navbar-brand" href="#">Stephbar</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#"
+              target="_blank">Inspiration<span class="sr-only">(current)</span></a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <!-- ====++++====++++====++++ END BOOTSTRAP NAVBAR ++++====++++====++++==== -->
+
+    <!-- ====++++====++++====++++ START BOOTSTRAP JUMBOTRON ++++====++++====++++==== -->
+    <div class="jumbotron jumbotron-fluid">
+      <div class="container">
+        <h1 class="display-4">Ice Cream Stand</h1>
+        <p class="lead">Placeholder text here.</p>
+      </div>
+    </div>
+    <!-- ====++++====++++====++++ END BOOTSTRAP JUMBOTRON ++++====++++====++++==== -->
+
+    <!-- ====++++====++++====++++==== START FORM ====++++====++++====++++==== -->
+    <form>
+
+      <div class="row justify-content-center">
+        <div class="col-2">
+          <input
+            type="text"
+            class="form-control"
+            name="timeWindow"
+            placeholder="Time Window (hours)"
+            id="timeWindow"
+            onkeypress="return isNumber(event)"
+          />
+        </div>
+      </div>
+
+      <div class="row justify-content-center">
+        <div class="col-2">
+          <input
+            type="text"
+            class="form-control"
+            name="coneTimeMeanMins"
+            placeholder="Cone Time Average (min)"
+            onkeypress="return isNumber(event)"
+          />
+        </div>
+      </div>
+
+      <div class="row justify-content-center">
+        <div class="col-2">
+          <input
+            type="text"
+            class="form-control"
+            name="coneTimeStdDevMins"
+            placeholder="Cone Time Std Dev (min)"
+            onkeypress="return isNumber(event)"
+          />
+        </div>
+      </div>
+      
+      <div class="row justify-content-center">
+    
+        <div class="col-2">
+          <input type="text"
+          readonly class="form-control-plaintext"
+          placeholder="-">
+        </div>
+      </div>
+      
+      <div class="row justify-content-center">
+    
+        <div class="col-2">
+          <input
+            type="text"
+            class="form-control"
+            name="customerArrivalMeanMins"
+            placeholder="Average Arrival Spacing (min)"
+            onkeypress="return isNumber(event)"
+          />
+        </div>
+      </div>
+      
+      <div class="row justify-content-center">
+    
+        <div class="col-2">
+          <input
+            type="text"
+            class="form-control"
+            name="simulationRuns"
+            placeholder="Simulation Iterations"
+            onkeypress="return isNumber(event)"
+          />
+        </div>
+      </div>
+      
+      <div class="row justify-content-center">
+    
+        <!-- use type = "button" to keep page from refreshing -->
+        <div class="col1">
+    
+          <button type="button" class="btn btn-primary mb-2" id="btn">Submit</button>
+    
+          <button type="button" class="btn btn-primary mb-2" id="clearBtn">Clear</button>
+    
+        </div>
+    
+    
+      </div>
+    </form>
+    <!-- ====++++====++++====++++==== END FORM ====++++====++++====++++==== -->
+
+    <!-- ====++++====++++====++++==== START LIST ====++++====++++====++++==== -->
+    <ul>
+    
+      <!-- <li>ALPHANUMERIC LIST</li> -->
+    
+    </ul>
+    <!-- ====++++====++++====++++==== END LIST ====++++====++++====++++==== -->
+
+    <!-- ====++++====++++====++++ START JAVASCRIPT ++++====++++====++++==== -->
+    <!-- Stephanie Script -->
+    <script type="module" src="./script2.js"></script>
+    <!-- From Bootstrap for end of <body> -->
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous">
+    </script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+      integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+      crossorigin="anonymous">
+    </script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+      integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+      crossorigin="anonymous">
+    </script>
+    <!-- ====++++====++++====++++ END JAVASCRIPT ++++====++++====++++==== -->
+  </body>
+
+</html>

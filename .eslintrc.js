@@ -2,6 +2,8 @@ module.exports = {
   env: {
     mocha: true,
     es2020: true,
+    node: true,
+    browser: true,
   },
   extends: [
     'airbnb-base',
