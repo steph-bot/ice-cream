@@ -27,10 +27,10 @@ const simulationNormal = require('./simulation-normal');
     - Customers must wait in line after arriving if a cone is in progress
 */
 
-console.log(timeWindow_i);
-console.log(simulationRuns_i);
-console.log(calculateConeTime_i);
-console.log(calcTimeBetweenCustomers_i);
+// console.log(timeWindow_i);
+// console.log(simulationRuns_i);
+// console.log(calculateConeTime_i);
+// console.log(calcTimeBetweenCustomers_i);
 
 const waitTimesArray = simulation(
   timeWindow_i,
@@ -40,7 +40,7 @@ const waitTimesArray = simulation(
 );
 
 // console.log(`test`);
-// const testing = simulationNormal(7, 7, 1, 7, 1001);
+const testing = simulationNormal(7, 7, 1, 7, 1001);
 
 // console.log(`test`);
 // const testing2 = simulationNormal(7, 7, 1, 7, 1001);

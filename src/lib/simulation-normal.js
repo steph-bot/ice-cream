@@ -17,12 +17,14 @@ const simulationNormal = (
   const customerArrivalLambda = 1 / custArrivalMeanMins;
   const calcTimeBetweenCustomers = random.exponential(customerArrivalLambda);
 
-  simulation(
+  const output = simulation(
     timeWindow,
     simRuns,
     calculateConeTime,
     calcTimeBetweenCustomers,
   );
+
+  return output;
 };
 
 module.exports = simulationNormal;
