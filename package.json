@@ -9,16 +9,8 @@
     "test": "mocha test/*",
     "test-debug": "mocha debug test/*"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/steph-bot/ice-cream.git"
-  },
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/steph-bot/ice-cream/issues"
-  },
-  "homepage": "https://github.com/steph-bot/ice-cream#readme",
   "dependencies": {
     "mocha": "^8.0.1",
     "random": "^2.2.0"

@@ -1,0 +1,24 @@
+< Average Wait for VIP Customer: 41.02621595824031
+< Mean Wait in System (wait in queue + service time): 32.61476862575607
+< Mean Wait in Queue (wait in queue): 25.621421791325286
+< Program Run Time (ms): 41.786130994558334
+< test
+< Average Wait for VIP Customer: 39.86100691449653
+< Mean Wait in System (wait in queue + service time): 32.56759205252369
+< Mean Wait in Queue (wait in queue): 25.57083174763702
+< Program Run Time (ms): 32.5737389922142
+< test
+< Average Wait for VIP Customer: 41.735596700269376
+< Mean Wait in System (wait in queue + service time): 33.5466777378132
+< Mean Wait in Queue (wait in queue): 26.544137447268824
+< Program Run Time (ms): 14.44778099656105
+< test
+< Average Wait for VIP Customer: 43.5888882265196
+< Mean Wait in System (wait in queue + service time): 33.54880670305925
+< Mean Wait in Queue (wait in queue): 26.550209948495706
+< Program Run Time (ms): 14.497818991541862
+< test
+< Average Wait for VIP Customer: 43.956750333134735
+< Mean Wait in System (wait in queue + service time): 33.665429452836676
+< Mean Wait in Queue (wait in queue): 26.66764088024362
+< Program Run Time (ms): 14.204276993870735
