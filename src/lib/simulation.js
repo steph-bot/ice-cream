@@ -103,7 +103,7 @@ const simulation = (
       },
     },
   };
-
+  console.log(`- - - - - r e s u l t - - - - - -`);
   console.log(`Average Wait for VIP Customer: ${simOutput.simSummary.meanWaitTimeForVIP}`);
   /// ////// stephania here
   console.log(`Mean Wait in System (wait in queue + service time): ${simOutput.simSummary.meanMeanWaitTimeForAllCustomers.system}`);
@@ -112,6 +112,8 @@ const simulation = (
   const programEndTime = performance.now();
   simOutput.simSummary.programRunTime = (programEndTime - programStartTime);
   console.log(`Program Run Time (ms): ${simOutput.simSummary.programRunTime}`);
+  console.log(`- - - - - - - - - - - - - - - - -`);
+
   return simOutput;
 };
 

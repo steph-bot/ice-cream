@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- Bootstrap CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+      integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous" />
+    
+      <!-- Semantic UI -->
+    <link rel="stylesheet" href="scripts/semantic-ui-css/semantic.min.css">
+    <title>ice cream stand</title>
+</head>
+
+<body>
+    <div class="ui container">
+        <!-- Navigation Menu -->
+        <div class="ui four item inverted green menu">
+            <div class="header item">
+                ice cream stand
+            </div>
+
+            <a class="item" href="/">
+                simulation
+            </a>
+
+        </div>
+
+        <!-- Error Template -->
+        <script id="error-template" type="text/x-handlebars-template">
+          <div class="ui {{color}} inverted segment" style="height:250px;">
+            <br>
+            <h2 class="ui center aligned icon header">
+              <i class="exclamation triangle icon"></i>
+              <div class="content">
+                {{title}}
+                <div class="sub header">{{message}}</div>
+              </div>
+            </h2>
+          </div>
+        </script>
+        
+        <!-- Simulation Template -->
+        <script id="simulation-template" type="text/x-handlebars-template">
+          <hr>
+          <div class="ui basic loading segment">
+            <form class="ui form">
+
+                <h4 class="ui dividing header">
+                  simulation
+                </h4>
+                <div class="two fields">
+                  <div class="five wide field">
+                      <label>time window (hours)</label>
+                      <input type="number" name="timeWindow" id="timeWindow" placeholder="time window (h)">
+                  </div>
+                  <div class="five wide field">
+                    <label>simulation iterations</label>
+                    <input type="number" name="simRuns" id="simRuns" placeholder="simRuns">
+                  </div>
+                </div>
+                <h4 class="ui dividing header">
+                  cone making time
+                </h4>
+                <div class="two fields">
+                  <div class="five wide field">
+                      <label>average (minutes)</label>
+                      <input type="number" name="coneTimeMeanMins" id="coneTimeMeanMins" placeholder="coneTimeMeanMins">
+                  </div>
+                  <div class="five wide field">
+                    <label>standard deviation (minutes)</label>
+                    <input type="number" name="coneTimeStdDevMins" id="coneTimeStdDevMins" placeholder="coneTimeStdDevMins">
+                  </div>
+                </div>
+                <h4 class="ui dividing header">
+                  customer arrival time
+                </h4>
+                <div class="five wide field">
+                  <label>average (minutes)</label>
+                  <input type="number" name="custArrivalMeanMins" id="custArrivalMeanMins" placeholder="custArrivalMeanMins">
+                </div>
+                
+              <div class="ui olive submit button">run simulation</div>
+              <div class="ui error message"></div>
+            </form>
+            <br>
+            <div id="result-segment2" class="ui center aligned segment">
+              <h2 id="result2" class="ui header">
+                :-)
+              </h2>
+            </div>
+          </div>
+        </script>
+        
+        <!-- Application Root -->
+        <div id="app"></div>
+    </div>
+
+    <!-- JS Library Dependencies -->
+    <script src="scripts/jquery/dist/jquery.min.js"></script>
+    <script src="scripts/semantic-ui-css/semantic.min.js"></script>
+    <script src="scripts/axios/dist/axios.min.js"></script>
+    <script src="scripts/handlebars/dist/handlebars.min.js"></script>
+    <script src="scripts/vanilla-router/dist/vanilla-router.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>

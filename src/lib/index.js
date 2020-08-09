@@ -40,7 +40,7 @@ const waitTimesArray = simulation(
 );
 
 // console.log(`test`);
-const testing = simulationNormal(7, 7, 1, 7, 1001);
+// const testing = simulationNormal(7, 7, 1, 7, 1001);
 
 // console.log(`test`);
 // const testing2 = simulationNormal(7, 7, 1, 7, 1001);
