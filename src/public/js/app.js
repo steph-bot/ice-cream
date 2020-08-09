@@ -49,10 +49,9 @@ window.addEventListener('load', () => {
         custArrivalMeanMins,
         simRuns,
       });
-      console.log(response);
-      const { meanWaitTimeForVIP } = response.data;
-      const result = meanWaitTimeForVIP;
-      $('#result2').html(`${result}`);
+      const { medianWaitTimeForVIP } = response.data;
+      const result = medianWaitTimeForVIP;
+      $('#result2').html(`median wait time (min): ${result}`);
     } catch (error) {
       showError(error);
     } finally {

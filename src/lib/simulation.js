@@ -1,4 +1,5 @@
 const { performance } = require('perf_hooks');
+const median = require('median-quickselect');
 
 const customerArrives = (arrivalTime, customerArray, calculateConeTime) => {
   const coneTime = calculateConeTime();
@@ -36,7 +37,6 @@ const simulation = (
   calculateConeTime,
   calcTimeBetweenCustomers,
 ) => {
-  // console.time('programRunTime');
   const programStartTime = performance.now();
   const VIPWaitTimesArray = [];
   const meanWaitInSystemArray = [];
@@ -82,7 +82,6 @@ const simulation = (
     const meanWaitInQueue = arrayAverage(allCustomerQueueWaitTimesArray);
     meanWaitInSystemArray.push(meanWaitInSystem);
     meanWaitInQueueArray.push(meanWaitInQueue);
-    // debugger;
 
     /// ///// stephania here
   }
@@ -97,13 +96,14 @@ const simulation = (
     },
     simSummary: {
       meanWaitTimeForVIP: arrayAverage(VIPWaitTimesArray), // avg wait for VIP customer
+      medianWaitTimeForVIP: median(VIPWaitTimesArray), // median wait for VIP customer
       meanMeanWaitTimeForAllCustomers: {
         system: arrayAverage(meanWaitInSystemArray),
         queue: arrayAverage(meanWaitInQueueArray),
       },
     },
   };
-  console.log(`- - - - - r e s u l t - - - - - -`);
+  console.log('- - - - - r e s u l t - - - - - -\n');
   console.log(`Average Wait for VIP Customer: ${simOutput.simSummary.meanWaitTimeForVIP}`);
   /// ////// stephania here
   console.log(`Mean Wait in System (wait in queue + service time): ${simOutput.simSummary.meanMeanWaitTimeForAllCustomers.system}`);
@@ -112,7 +112,7 @@ const simulation = (
   const programEndTime = performance.now();
   simOutput.simSummary.programRunTime = (programEndTime - programStartTime);
   console.log(`Program Run Time (ms): ${simOutput.simSummary.programRunTime}`);
-  console.log(`- - - - - - - - - - - - - - - - -`);
+  console.log('\n- - - - - - - - - - - - - - - - -');
 
   return simOutput;
 };
