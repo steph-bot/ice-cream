@@ -1,4 +1,5 @@
 const { performance } = require('perf_hooks');
+const _ = require('lodash');
 const median = require('median-quickselect');
 
 const customerArrives = (arrivalTime, customerArray, calculateConeTime) => {
@@ -29,7 +30,7 @@ const customerCalcs = (customerArray) => {
   }
 };
 
-const arrayAverage = (array) => array.reduce((a, b) => a + b) / array.length;
+const arrayAverage = (array) => array.reduce((a, b) => a + b, 0) / array.length;
 
 const simulation = (
   timeWindow,
@@ -58,7 +59,9 @@ const simulation = (
 
     const VIPCustomer = {};
     VIPCustomer.arrivalTime = timeWindow.mins;
-    const lastCustomerLeaveTime = customerQueue[customerQueue.length - 1].leaveTime;
+    const lastCustomerLeaveTime = _.get(
+      customerQueue[customerQueue.length - 1], 'leaveTime', 0,
+    );
     VIPCustomer.waitTime = lastCustomerLeaveTime - VIPCustomer.arrivalTime;
     if (VIPCustomer.waitTime < 0) {
       VIPCustomer.waitTime = 0;
@@ -71,12 +74,12 @@ const simulation = (
     const allCustomerSystemWaitTimesArray = customerQueue.reduce((acc, customer, index) => {
       acc[index] = customer.systemWaitTime;
       return acc;
-    }, []);
+    }, [0]);
 
     const allCustomerQueueWaitTimesArray = customerQueue.reduce((acc, customer, index) => {
       acc[index] = customer.waitTime;
       return acc;
-    }, []);
+    }, [0]);
 
     const meanWaitInSystem = arrayAverage(allCustomerSystemWaitTimesArray);
     const meanWaitInQueue = arrayAverage(allCustomerQueueWaitTimesArray);
