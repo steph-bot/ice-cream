@@ -1,6 +1,6 @@
 const { performance } = require('perf_hooks');
 const _ = require('lodash');
-const median = require('median-quickselect');
+const quickSelect = require('quickselect.js');
 
 const customerArrives = (arrivalTime, customerArray, calculateConeTime) => {
   const coneTime = calculateConeTime();
@@ -33,6 +33,16 @@ const customerCalcs = (customerInputArray) => {
 };
 
 const arrayAverage = (array) => array.reduce((a, b) => a + b, 0) / array.length;
+
+const quickSelectMedian = (array) => {
+  const { length } = array;
+  if (length % 2) {
+    return quickSelect(array, length / 2);
+  }
+  return (
+    0.5 * (quickSelect(array, length / 2 - 1) + quickSelect(array, length / 2))
+  );
+};
 
 const simulation = (
   timeWindow,
@@ -101,7 +111,9 @@ const simulation = (
     },
     simSummary: {
       meanWaitTimeForVIP: arrayAverage(VIPWaitTimesArray), // avg wait for VIP customer
-      medianWaitTimeForVIP: median(VIPWaitTimesArray), // median wait for VIP customer
+      medianWaitTimeForVIP: Math.round(
+        (quickSelectMedian(VIPWaitTimesArray) * 100),
+      ) / 100, // median wait for VIP customer
       meanMeanWaitTimeForAllCustomers: {
         system: arrayAverage(meanWaitInSystemArray),
         queue: arrayAverage(meanWaitInQueueArray),

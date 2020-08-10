@@ -20,7 +20,7 @@
     "handlebars": "^4.7.6",
     "jquery": "^3.5.1",
     "lodash": "^4.17.19",
-    "median-quickselect": "^1.0.1",
+    "quickselect.js": "^0.1.4",
     "random": "^2.2.0",
     "semantic-ui-css": "^2.4.1",
     "vanilla-router": "^1.2.8"
