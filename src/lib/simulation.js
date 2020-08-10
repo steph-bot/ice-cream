@@ -12,7 +12,8 @@ const customerArrives = (arrivalTime, customerArray, calculateConeTime) => {
   customerArray.push(customer);
 };
 
-const customerCalcs = (customerArray) => {
+const customerCalcs = (customerInputArray) => {
+  const customerArray = customerInputArray;
   const i = customerArray.length - 1;
   if (i === 0) {
     // 1st Customer
@@ -28,6 +29,7 @@ const customerCalcs = (customerArray) => {
     customerArray[i].leaveTime = customerArray[i].waitTime + customerArray[i].earliestLeaveTime;
     customerArray[i].systemWaitTime = customerArray[i].waitTime + customerArray[i].coneTime;
   }
+  return customerArray;
 };
 
 const arrayAverage = (array) => array.reduce((a, b) => a + b, 0) / array.length;
@@ -43,7 +45,7 @@ const simulation = (
   const meanWaitInSystemArray = [];
   const meanWaitInQueueArray = [];
   for (let i = 0; i < simulationRuns; i++) {
-    const customerQueue = [];
+    let customerQueue = [];
     for (let time = 0; time < timeWindow.mins;) {
       const timeTillNextCustomer = calcTimeBetweenCustomers();
       const arrivalTime = time + timeTillNextCustomer;
@@ -51,7 +53,7 @@ const simulation = (
       if (arrivalTime < timeWindow.mins) {
         time = arrivalTime;
         customerArrives(arrivalTime, customerQueue, calculateConeTime);
-        customerCalcs(customerQueue);
+        customerQueue = customerCalcs(customerQueue);
       } else {
         time = timeWindow.mins;
       }
