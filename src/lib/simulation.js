@@ -2,7 +2,22 @@ const { performance } = require('perf_hooks');
 const _ = require('lodash');
 const quickSelect = require('quickselect.js');
 
-const customerArrives = (arrivalTime, customerArray, calculateConeTime) => {
+// Calculate average for array of numbers.
+const arrayAverage = (array) => array.reduce((a, b) => a + b, 0) / array.length;
+
+// Calculate median for array of numbers using quickselect algorithm.
+const quickSelectMedian = (array) => {
+  const { length } = array;
+  if (length % 2) {
+    return quickSelect(array, length / 2);
+  }
+  return (
+    0.5 * (quickSelect(array, length / 2 - 1) + quickSelect(array, length / 2))
+  );
+};
+
+const customerArrives = (arrivalTime, customerInputArray, calculateConeTime) => {
+  const customerArray = customerInputArray;
   const coneTime = calculateConeTime();
   const customer = {
     arrivalTime,
@@ -10,6 +25,7 @@ const customerArrives = (arrivalTime, customerArray, calculateConeTime) => {
     earliestLeaveTime: arrivalTime + coneTime,
   };
   customerArray.push(customer);
+  return customerArray;
 };
 
 const customerCalcs = (customerInputArray) => {
@@ -32,18 +48,6 @@ const customerCalcs = (customerInputArray) => {
   return customerArray;
 };
 
-const arrayAverage = (array) => array.reduce((a, b) => a + b, 0) / array.length;
-
-const quickSelectMedian = (array) => {
-  const { length } = array;
-  if (length % 2) {
-    return quickSelect(array, length / 2);
-  }
-  return (
-    0.5 * (quickSelect(array, length / 2 - 1) + quickSelect(array, length / 2))
-  );
-};
-
 const simulation = (
   timeWindow,
   simulationRuns,
@@ -62,7 +66,7 @@ const simulation = (
 
       if (arrivalTime < timeWindow.mins) {
         time = arrivalTime;
-        customerArrives(arrivalTime, customerQueue, calculateConeTime);
+        customerQueue = customerArrives(arrivalTime, customerQueue, calculateConeTime);
         customerQueue = customerCalcs(customerQueue);
       } else {
         time = timeWindow.mins;
