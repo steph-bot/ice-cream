@@ -127,10 +127,12 @@ const simulation = (
   };
   console.log('- - - - - r e s u l t - - - - - -\n');
   console.log(`Average Wait for VIP Customer: ${simOutput.simSummary.meanWaitTimeForVIP}`);
-  /// ////// stephania here
-  console.log(`Mean Wait in System (wait in queue + service time): ${simOutput.simSummary.meanMeanWaitTimeForAllCustomers.system}`);
-  console.log(`Mean Wait in Queue (wait in queue): ${simOutput.simSummary.meanMeanWaitTimeForAllCustomers.queue}`);
-  /// ////// stephania here
+  console.log(`Median Wait for VIP Customer: ${simOutput.simSummary.medianWaitTimeForVIP}`);
+  if (process.env.NODE_ENV === 'development') {
+    // Additional Data for Tests.
+    console.log(`Mean Wait in System (wait in queue + service time): ${simOutput.simSummary.meanMeanWaitTimeForAllCustomers.system}`);
+    console.log(`Mean Wait in Queue (wait in queue): ${simOutput.simSummary.meanMeanWaitTimeForAllCustomers.queue}`);
+  }
   const programEndTime = performance.now();
   simOutput.simSummary.programRunTime = (programEndTime - programStartTime);
   console.log(`Program Run Time (ms): ${simOutput.simSummary.programRunTime}`);

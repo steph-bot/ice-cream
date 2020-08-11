@@ -67,18 +67,3 @@ const server = app.listen(port, () => {
   console.log('listening on %d', port);
   console.log(`http://localhost:${port}/`);
 });
-
-// server.setTimeout(240000);
-
-// // Test Simulation Endpoint
-// const test = async () => {
-//     const data = await simulationNormal(
-//         7, // timeWindowHrs,
-//         7, // coneTimeMeanMins,
-//         1, // coneTimeStdDevMins,
-//         7, // custArrivalMeanMins,
-//         1001, // simRuns,
-//     );
-//     console.log(data);
-// }
-// test();
