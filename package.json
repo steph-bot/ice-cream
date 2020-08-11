@@ -4,10 +4,10 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "src": "node src/lib/index.js",
-    "src-debug": "node debug src/lib/index.js",
-    "test": "mocha test/*",
-    "test-debug": "mocha debug test/*",
+    "src": "NODE_ENV=development node src/lib/index.js",
+    "src-debug": "NODE_ENV=development node debug src/lib/index.js",
+    "test": "NODE_ENV=development mocha test/*",
+    "test-debug": "NODE_ENV=development mocha debug test/*",
     "start": "node server.js"
   },
   "author": "",

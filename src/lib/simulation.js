@@ -2,10 +2,10 @@ const { performance } = require('perf_hooks');
 const _ = require('lodash');
 const quickSelect = require('quickselect.js');
 
-// Calculate average for array of numbers.
+// Calculate Average: Array of Numbers
 const arrayAverage = (array) => array.reduce((a, b) => a + b, 0) / array.length;
 
-// Calculate median for array of numbers using quickselect algorithm.
+// Calculate Median: Array of Numbers using Quickselect Algorithm
 const quickSelectMedian = (array) => {
   const { length } = array;
   if (length % 2) {
@@ -16,6 +16,7 @@ const quickSelectMedian = (array) => {
   );
 };
 
+// Customer Arrives During Time Window
 const customerArrives = (arrivalTime, customerInputArray, calculateConeTime) => {
   const customerArray = customerInputArray;
   const coneTime = calculateConeTime();
@@ -28,6 +29,7 @@ const customerArrives = (arrivalTime, customerInputArray, calculateConeTime) => 
   return customerArray;
 };
 
+// Calculations for Customer in Queue
 const customerCalcs = (customerInputArray) => {
   const customerArray = customerInputArray;
   const i = customerArray.length - 1;
@@ -48,6 +50,7 @@ const customerCalcs = (customerInputArray) => {
   return customerArray;
 };
 
+// Simulation Logic
 const simulation = (
   timeWindow,
   simulationRuns,
@@ -60,19 +63,21 @@ const simulation = (
   const meanWaitInQueueArray = [];
   for (let i = 0; i < simulationRuns; i++) {
     let customerQueue = [];
+
+    // Customers Arrive During Time Window
     for (let time = 0; time < timeWindow.mins;) {
       const timeTillNextCustomer = calcTimeBetweenCustomers();
       const arrivalTime = time + timeTillNextCustomer;
-
       if (arrivalTime < timeWindow.mins) {
         time = arrivalTime;
         customerQueue = customerArrives(arrivalTime, customerQueue, calculateConeTime);
         customerQueue = customerCalcs(customerQueue);
       } else {
-        time = timeWindow.mins;
+        time = timeWindow.mins; // Late Arrival
       }
     }
 
+    // VIP Customer Arrives (End of Time Window)
     const VIPCustomer = {};
     VIPCustomer.arrivalTime = timeWindow.mins;
     const lastCustomerLeaveTime = _.get(
@@ -82,27 +87,23 @@ const simulation = (
     if (VIPCustomer.waitTime < 0) {
       VIPCustomer.waitTime = 0;
     }
-
     VIPWaitTimesArray.push(VIPCustomer.waitTime);
 
-    /// ////// stephania here
-
-    const allCustomerSystemWaitTimesArray = customerQueue.reduce((acc, customer, index) => {
-      acc[index] = customer.systemWaitTime;
-      return acc;
-    }, [0]);
-
-    const allCustomerQueueWaitTimesArray = customerQueue.reduce((acc, customer, index) => {
-      acc[index] = customer.waitTime;
-      return acc;
-    }, [0]);
-
-    const meanWaitInSystem = arrayAverage(allCustomerSystemWaitTimesArray);
-    const meanWaitInQueue = arrayAverage(allCustomerQueueWaitTimesArray);
-    meanWaitInSystemArray.push(meanWaitInSystem);
-    meanWaitInQueueArray.push(meanWaitInQueue);
-
-    /// ///// stephania here
+    // Additional Data for Tests.
+    if (process.env.NODE_ENV === 'development') {
+      const allCustomerSystemWaitTimesArray = customerQueue.reduce((acc, customer, index) => {
+        acc[index] = customer.systemWaitTime;
+        return acc;
+      }, [0]);
+      const allCustomerQueueWaitTimesArray = customerQueue.reduce((acc, customer, index) => {
+        acc[index] = customer.waitTime;
+        return acc;
+      }, [0]);
+      const meanWaitInSystem = arrayAverage(allCustomerSystemWaitTimesArray);
+      const meanWaitInQueue = arrayAverage(allCustomerQueueWaitTimesArray);
+      meanWaitInSystemArray.push(meanWaitInSystem);
+      meanWaitInQueueArray.push(meanWaitInQueue);
+    }
   }
 
   const simOutput = {

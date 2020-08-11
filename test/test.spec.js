@@ -47,11 +47,11 @@ describe('Simulation Logic (Example)', () => {
     input.calculateConeTime,
     input.calcTimeBetweenCustomers,
   );
-  const expectedOutput = simulationOutput.simSummary;
+  const actual = simulationOutput.simSummary;
   const output = {
-    meanWaitInQueue: expectedOutput.meanMeanWaitTimeForAllCustomers.queue,
-    meanWaitInSystem: expectedOutput.meanMeanWaitTimeForAllCustomers.system,
-    programRunTime: expectedOutput.programRunTime,
+    meanWaitInQueue: actual.meanMeanWaitTimeForAllCustomers.queue,
+    meanWaitInSystem: actual.meanMeanWaitTimeForAllCustomers.system,
+    programRunTime: actual.programRunTime,
   };
   it(`Should have mean wait in queue (${output.meanWaitInQueue}) close to ${expected.meanWaitInQueue}.`, () => {
     const valueCheck = valueWithinErrorTolerance(
@@ -69,7 +69,6 @@ describe('Simulation Logic (Example)', () => {
     );
     assert.deepStrictEqual(valueCheck, true);
   });
-  // output.programRunTime
   it(`Program run time (${output.programRunTime}) less than ${expected.maxRunTime}.`, () => {
     const valueCheck = output.programRunTime < expected.maxRunTime;
     assert.deepStrictEqual(valueCheck, true);
