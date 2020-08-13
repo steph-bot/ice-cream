@@ -2,16 +2,21 @@ const assert = require('assert');
 const random = require('random');
 const simulation = require('../src/lib/simulation');
 
-// Reference: http://web.mst.edu/~gosavia/queuing_formulas.pdf
+/*
+
+Cone making time is exponentially distributed, customer arrivals are exponentially distributed.
+Reference: http://web.mst.edu/~gosavia/queuing_formulas.pdf
+
+*/
 
 const coneTimeStats = {
-  mean: 8, // (minutes) avg time between customer arrivals
+  mean: 8, // Average Cone Time (min)
 };
 
 const coneLambda = 1 / coneTimeStats.mean;
 
 const customerArrivalStats = {
-  mean: 10, // (minutes) avg time between customer arrivals
+  mean: 10, // Average Customer Arrival Spacing (min)
 };
 
 const customerLambda = 1 / customerArrivalStats.mean;

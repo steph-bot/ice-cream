@@ -55,10 +55,10 @@ const customerCalcs = (customerInputArray) => {
 
 // Simulation Logic
 const simulation = (
-  timeWindowHrs,
-  simulationRuns,
-  calculateConeTime,
-  calcTimeBetweenCustomers,
+  timeWindowHrs, // Number: Simulated Time Window
+  simulationRuns, // Number: Simulation Iterations
+  calculateConeTime, // Function: Calculate Time to Create Single Cone
+  calcTimeBetweenCustomers, // Function: Calculate Time Until Next Customer
 ) => {
   const programStartTime = performance.now();
   const VIPWaitTimesArray = [];
@@ -93,7 +93,7 @@ const simulation = (
     }
     VIPWaitTimesArray.push(VIPCustomer.waitTime);
 
-    // Additional Data for Tests.
+    // Additional Data for Tests
     if (process.env.NODE_ENV === 'development') {
       const allCustomerSystemWaitTimesArray = customerQueue.reduce((acc, customer, index) => {
         acc[index] = customer.systemWaitTime;
@@ -110,28 +110,34 @@ const simulation = (
     }
   }
 
+  // Generate Output Object
   const simOutput = {
     rawData: {
       waitTimeForVIP: VIPWaitTimesArray,
-      meanWaitTimeForAllCustomers: {
-        system: meanWaitInSystemArray,
-        queue: meanWaitInQueueArray,
-      },
     },
     simSummary: {
-      meanWaitTimeForVIP: round(arrayAverage(VIPWaitTimesArray)), // avg wait for VIP customer
-      medianWaitTimeForVIP: round(quickSelectMedian(VIPWaitTimesArray)), // median wait for VIP
-      meanMeanWaitTimeForAllCustomers: {
-        system: round(arrayAverage(meanWaitInSystemArray)),
-        queue: round(arrayAverage(meanWaitInQueueArray)),
-      },
+      meanWaitTimeForVIP: round(arrayAverage(VIPWaitTimesArray)),
+      medianWaitTimeForVIP: round(quickSelectMedian(VIPWaitTimesArray)),
     },
   };
-  console.log('- - - - - r e s u l t - - - - - -\n');
-  console.log(`Average Wait for VIP Customer: ${simOutput.simSummary.meanWaitTimeForVIP}`);
-  console.log(`Median Wait for VIP Customer: ${simOutput.simSummary.medianWaitTimeForVIP}`);
+
+  // Additional Output for Tests
   if (process.env.NODE_ENV === 'development') {
-    // Additional Data for Tests.
+    simOutput.rawData.meanWaitTimeForAllCustomers = {
+      system: meanWaitInSystemArray,
+      queue: meanWaitInQueueArray,
+    };
+    simOutput.simSummary.meanMeanWaitTimeForAllCustomers = {
+      system: round(arrayAverage(meanWaitInSystemArray)),
+      queue: round(arrayAverage(meanWaitInQueueArray)),
+    };
+  }
+
+  console.log('- - - - - r e s u l t - - - - - -\n');
+  console.log(`Average Wait for VIP Customer (min): ${simOutput.simSummary.meanWaitTimeForVIP}`);
+  console.log(`Median Wait for VIP Customer (min): ${simOutput.simSummary.medianWaitTimeForVIP}`);
+  if (process.env.NODE_ENV === 'development') {
+    // Additional Output for Tests
     console.log(`Mean Wait in System (wait in queue + service time): ${simOutput.simSummary.meanMeanWaitTimeForAllCustomers.system}`);
     console.log(`Mean Wait in Queue (wait in queue): ${simOutput.simSummary.meanMeanWaitTimeForAllCustomers.queue}`);
   }
