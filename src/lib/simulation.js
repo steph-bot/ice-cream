@@ -5,6 +5,9 @@ const quickSelect = require('quickselect.js');
 // Calculate Average: Array of Numbers
 const arrayAverage = (array) => array.reduce((a, b) => a + b, 0) / array.length;
 
+// Round to 2 Decimal Places
+const round = (number) => Math.round(number * 100) / 100;
+
 // Calculate Median: Array of Numbers using Quickselect Algorithm
 const quickSelectMedian = (array) => {
   const { length } = array;
@@ -115,13 +118,11 @@ const simulation = (
       },
     },
     simSummary: {
-      meanWaitTimeForVIP: arrayAverage(VIPWaitTimesArray), // avg wait for VIP customer
-      medianWaitTimeForVIP: Math.round(
-        (quickSelectMedian(VIPWaitTimesArray) * 100),
-      ) / 100, // median wait for VIP customer
+      meanWaitTimeForVIP: round(arrayAverage(VIPWaitTimesArray)), // avg wait for VIP customer
+      medianWaitTimeForVIP: round(quickSelectMedian(VIPWaitTimesArray)), // median wait for VIP
       meanMeanWaitTimeForAllCustomers: {
-        system: arrayAverage(meanWaitInSystemArray),
-        queue: arrayAverage(meanWaitInQueueArray),
+        system: round(arrayAverage(meanWaitInSystemArray)),
+        queue: round(arrayAverage(meanWaitInQueueArray)),
       },
     },
   };
@@ -134,7 +135,7 @@ const simulation = (
     console.log(`Mean Wait in Queue (wait in queue): ${simOutput.simSummary.meanMeanWaitTimeForAllCustomers.queue}`);
   }
   const programEndTime = performance.now();
-  simOutput.simSummary.programRunTime = (programEndTime - programStartTime);
+  simOutput.simSummary.programRunTime = round(programEndTime - programStartTime);
   console.log(`Program Run Time (ms): ${simOutput.simSummary.programRunTime}`);
   console.log('\n- - - - - - - - - - - - - - - - -');
 

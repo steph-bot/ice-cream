@@ -1,6 +1,12 @@
 const random = require('random');
 const simulation = require('./simulation');
 
+/*
+
+Cone making time is normally distributed, customer arrivals are exponentially distributed.
+
+*/
+
 const simulationNormal = (
   timeWindowHrs,
   coneTimeMeanMins,
@@ -19,7 +25,10 @@ const simulationNormal = (
   timeWindow.hours = Number(timeWindowHrs);
   timeWindow.mins = timeWindow.hours * 60;
 
-  const calculateConeTime = random.normal(Number(coneTimeMeanMins), Number(coneTimeStdDevMins));
+  const calculateConeTime = random.normal(
+    Number(coneTimeMeanMins),
+    Number(coneTimeStdDevMins),
+  );
 
   const customerArrivalLambda = 1 / custArrivalMeanMins;
   const calcTimeBetweenCustomers = random.exponential(customerArrivalLambda);

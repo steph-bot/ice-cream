@@ -18,7 +18,7 @@ window.addEventListener('load', () => {
     },
   });
 
-  // Instantiate api handler (api client for communicating with proxy server)
+  // Instantiate API Handler (API Client for Communicating with Proxy Server)
   const api = axios.create({
     baseURL: 'http://localhost:3000/api',
     timeout: 0, // Do not time out requests.
@@ -31,7 +31,7 @@ window.addEventListener('load', () => {
     el.html(html);
   };
 
-  // Perform POST Request: Calculate and Display Simulation Results
+  // Perform POST Request: Calculate + Display Simulation Results
   const getSimulationResults = async () => {
     // Extract form data
     const timeWindow = $('#timeWindow').val();
@@ -40,7 +40,7 @@ window.addEventListener('load', () => {
     const custArrivalMeanMins = $('#custArrivalMeanMins').val();
     const simRuns = $('#simRuns').val();
 
-    // Send post data to Express(proxy) server
+    // Send POST Data to Express (Proxy) Server
     try {
       const response = await api.post('/simulate', {
         timeWindow,
@@ -75,15 +75,10 @@ window.addEventListener('load', () => {
   };
 
   router.add('/', async () => {
-    // Display loader first
+    // Display Loader First
     const html = simulationTemplate();
     el.html(html);
     try {
-      // Load Symbols
-      // const response = await api.get('/symbols');
-      // const { symbols } = response.data;
-      // html = simulationTemplate({ symbols });
-      // el.html(html);
       $('.loading').removeClass('loading');
       // Validate Form Inputs
       $('.ui.form').form({
@@ -102,7 +97,7 @@ window.addEventListener('load', () => {
     }
   });
 
-  // Navigate app to current url
+  // Navigate App to Current Url
   router.navigateTo(window.location.pathname);
 
   // Highlight Active Menu on Refresh/Page Reload
@@ -110,7 +105,7 @@ window.addEventListener('load', () => {
   link.addClass('active');
 
   $('a').on('click', (event) => {
-    // Block browser page load
+    // Block Browser Page Load
     event.preventDefault();
 
     // Highlight Active Menu on Click
@@ -118,7 +113,7 @@ window.addEventListener('load', () => {
     $('.item').removeClass('active');
     target.addClass('active');
 
-    // Navigate to clicked url
+    // Navigate to Clicked Url
     const href = target.attr('href');
     const path = href.substr(href.lastIndexOf('/'));
     router.navigateTo(path);
