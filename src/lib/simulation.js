@@ -55,7 +55,7 @@ const customerCalcs = (customerInputArray) => {
 
 // Simulation Logic
 const simulation = (
-  timeWindow,
+  timeWindowHrs,
   simulationRuns,
   calculateConeTime,
   calcTimeBetweenCustomers,
@@ -64,25 +64,26 @@ const simulation = (
   const VIPWaitTimesArray = [];
   const meanWaitInSystemArray = [];
   const meanWaitInQueueArray = [];
+  const timeWindowMins = timeWindowHrs * 60;
   for (let i = 0; i < simulationRuns; i++) {
     let customerQueue = [];
 
     // Customers Arrive During Time Window
-    for (let time = 0; time < timeWindow.mins;) {
+    for (let time = 0; time < timeWindowMins;) {
       const timeTillNextCustomer = calcTimeBetweenCustomers();
       const arrivalTime = time + timeTillNextCustomer;
-      if (arrivalTime < timeWindow.mins) {
+      if (arrivalTime < timeWindowMins) {
         time = arrivalTime;
         customerQueue = customerArrives(arrivalTime, customerQueue, calculateConeTime);
         customerQueue = customerCalcs(customerQueue);
       } else {
-        time = timeWindow.mins; // Late Arrival
+        time = timeWindowMins; // Late Arrival
       }
     }
 
     // VIP Customer Arrives (End of Time Window)
     const VIPCustomer = {};
-    VIPCustomer.arrivalTime = timeWindow.mins;
+    VIPCustomer.arrivalTime = timeWindowMins;
     const lastCustomerLeaveTime = _.get(
       customerQueue[customerQueue.length - 1], 'leaveTime', 0,
     );

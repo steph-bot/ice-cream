@@ -17,14 +17,11 @@ const customerArrivalStats = {
 const customerLambda = 1 / customerArrivalStats.mean;
 
 const input = {
-  timeWindow: {},
+  timeWindowHrs: 10000,
   simulationRuns: 500,
   calculateConeTime: random.exponential(coneLambda),
   calcTimeBetweenCustomers: random.exponential(customerLambda),
 };
-
-input.timeWindow.hours = 10000; // How many hours until VIP Customer shows up
-input.timeWindow.mins = input.timeWindow.hours * 60;
 
 const expected = {
   meanWaitInQueue: 32,
@@ -42,7 +39,7 @@ const valueWithinErrorTolerance = (actualVal, expectedVal, tolerance) => {
 
 describe('Simulation Logic (Example)', () => {
   const simulationOutput = simulation(
-    input.timeWindow,
+    input.timeWindowHrs,
     input.simulationRuns,
     input.calculateConeTime,
     input.calcTimeBetweenCustomers,
