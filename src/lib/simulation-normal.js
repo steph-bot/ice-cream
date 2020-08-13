@@ -21,10 +21,6 @@ const simulationNormal = (
   console.log(`custArrivalMeanMins: ${custArrivalMeanMins}`);
   console.log(`simRuns: ${simRuns}`);
 
-  const timeWindow = {};
-  timeWindow.hours = Number(timeWindowHrs);
-  timeWindow.mins = timeWindow.hours * 60;
-
   const calculateConeTime = random.normal(
     Number(coneTimeMeanMins),
     Number(coneTimeStdDevMins),
@@ -34,7 +30,7 @@ const simulationNormal = (
   const calcTimeBetweenCustomers = random.exponential(customerArrivalLambda);
 
   const output = simulation(
-    timeWindow,
+    timeWindowHrs,
     simRuns,
     calculateConeTime,
     calcTimeBetweenCustomers,

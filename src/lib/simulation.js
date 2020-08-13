@@ -55,34 +55,35 @@ const customerCalcs = (customerInputArray) => {
 
 // Simulation Logic
 const simulation = (
-  timeWindow,
-  simulationRuns,
-  calculateConeTime,
-  calcTimeBetweenCustomers,
+  timeWindowHrs, // Number: Simulated Time Window
+  simulationRuns, // Number: Simulation Iterations
+  calculateConeTime, // Function: Calculate Time to Create Single Cone
+  calcTimeBetweenCustomers, // Function: Calculate Time Until Next Customer
 ) => {
   const programStartTime = performance.now();
   const VIPWaitTimesArray = [];
   const meanWaitInSystemArray = [];
   const meanWaitInQueueArray = [];
+  const timeWindowMins = timeWindowHrs * 60;
   for (let i = 0; i < simulationRuns; i++) {
     let customerQueue = [];
 
     // Customers Arrive During Time Window
-    for (let time = 0; time < timeWindow.mins;) {
+    for (let time = 0; time < timeWindowMins;) {
       const timeTillNextCustomer = calcTimeBetweenCustomers();
       const arrivalTime = time + timeTillNextCustomer;
-      if (arrivalTime < timeWindow.mins) {
+      if (arrivalTime < timeWindowMins) {
         time = arrivalTime;
         customerQueue = customerArrives(arrivalTime, customerQueue, calculateConeTime);
         customerQueue = customerCalcs(customerQueue);
       } else {
-        time = timeWindow.mins; // Late Arrival
+        time = timeWindowMins; // Late Arrival
       }
     }
 
     // VIP Customer Arrives (End of Time Window)
     const VIPCustomer = {};
-    VIPCustomer.arrivalTime = timeWindow.mins;
+    VIPCustomer.arrivalTime = timeWindowMins;
     const lastCustomerLeaveTime = _.get(
       customerQueue[customerQueue.length - 1], 'leaveTime', 0,
     );
@@ -92,7 +93,7 @@ const simulation = (
     }
     VIPWaitTimesArray.push(VIPCustomer.waitTime);
 
-    // Additional Data for Tests.
+    // Additional Data for Tests
     if (process.env.NODE_ENV === 'development') {
       const allCustomerSystemWaitTimesArray = customerQueue.reduce((acc, customer, index) => {
         acc[index] = customer.systemWaitTime;
@@ -109,28 +110,34 @@ const simulation = (
     }
   }
 
+  // Generate Output Object
   const simOutput = {
     rawData: {
       waitTimeForVIP: VIPWaitTimesArray,
-      meanWaitTimeForAllCustomers: {
-        system: meanWaitInSystemArray,
-        queue: meanWaitInQueueArray,
-      },
     },
     simSummary: {
-      meanWaitTimeForVIP: round(arrayAverage(VIPWaitTimesArray)), // avg wait for VIP customer
-      medianWaitTimeForVIP: round(quickSelectMedian(VIPWaitTimesArray)), // median wait for VIP
-      meanMeanWaitTimeForAllCustomers: {
-        system: round(arrayAverage(meanWaitInSystemArray)),
-        queue: round(arrayAverage(meanWaitInQueueArray)),
-      },
+      meanWaitTimeForVIP: round(arrayAverage(VIPWaitTimesArray)),
+      medianWaitTimeForVIP: round(quickSelectMedian(VIPWaitTimesArray)),
     },
   };
-  console.log('- - - - - r e s u l t - - - - - -\n');
-  console.log(`Average Wait for VIP Customer: ${simOutput.simSummary.meanWaitTimeForVIP}`);
-  console.log(`Median Wait for VIP Customer: ${simOutput.simSummary.medianWaitTimeForVIP}`);
+
+  // Additional Output for Tests
   if (process.env.NODE_ENV === 'development') {
-    // Additional Data for Tests.
+    simOutput.rawData.meanWaitTimeForAllCustomers = {
+      system: meanWaitInSystemArray,
+      queue: meanWaitInQueueArray,
+    };
+    simOutput.simSummary.meanMeanWaitTimeForAllCustomers = {
+      system: round(arrayAverage(meanWaitInSystemArray)),
+      queue: round(arrayAverage(meanWaitInQueueArray)),
+    };
+  }
+
+  console.log('- - - - - r e s u l t - - - - - -\n');
+  console.log(`Average Wait for VIP Customer (min): ${simOutput.simSummary.meanWaitTimeForVIP}`);
+  console.log(`Median Wait for VIP Customer (min): ${simOutput.simSummary.medianWaitTimeForVIP}`);
+  if (process.env.NODE_ENV === 'development') {
+    // Additional Output for Tests
     console.log(`Mean Wait in System (wait in queue + service time): ${simOutput.simSummary.meanMeanWaitTimeForAllCustomers.system}`);
     console.log(`Mean Wait in Queue (wait in queue): ${simOutput.simSummary.meanMeanWaitTimeForAllCustomers.queue}`);
   }

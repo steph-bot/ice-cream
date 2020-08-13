@@ -2,29 +2,31 @@ const assert = require('assert');
 const random = require('random');
 const simulation = require('../src/lib/simulation');
 
-// Reference: http://web.mst.edu/~gosavia/queuing_formulas.pdf
+/*
+
+Cone making time is exponentially distributed, customer arrivals are exponentially distributed.
+Reference: http://web.mst.edu/~gosavia/queuing_formulas.pdf
+
+*/
 
 const coneTimeStats = {
-  mean: 8, // (minutes) avg time between customer arrivals
+  mean: 8, // Average Cone Time (min)
 };
 
 const coneLambda = 1 / coneTimeStats.mean;
 
 const customerArrivalStats = {
-  mean: 10, // (minutes) avg time between customer arrivals
+  mean: 10, // Average Customer Arrival Spacing (min)
 };
 
 const customerLambda = 1 / customerArrivalStats.mean;
 
 const input = {
-  timeWindow: {},
+  timeWindowHrs: 10000,
   simulationRuns: 500,
   calculateConeTime: random.exponential(coneLambda),
   calcTimeBetweenCustomers: random.exponential(customerLambda),
 };
-
-input.timeWindow.hours = 10000; // How many hours until VIP Customer shows up
-input.timeWindow.mins = input.timeWindow.hours * 60;
 
 const expected = {
   meanWaitInQueue: 32,
@@ -42,7 +44,7 @@ const valueWithinErrorTolerance = (actualVal, expectedVal, tolerance) => {
 
 describe('Simulation Logic (Example)', () => {
   const simulationOutput = simulation(
-    input.timeWindow,
+    input.timeWindowHrs,
     input.simulationRuns,
     input.calculateConeTime,
     input.calcTimeBetweenCustomers,
